@@ -69,3 +69,35 @@ def get_logger() -> logging.Logger:
     logger.propagate = False
 
     return logger
+
+
+def main() -> None:
+    """obtain a database connection using get_db and retrieve
+    all rows in the users table and display each row under
+    a filtered format"""
+    db = get_db()
+    cursor = db.cursor()
+    cursor.execute("SELECT * FROM users")
+    rows = cursor.fetchall()
+
+    logger = logging.getLogger('user_data')
+    logger.setLevel(logging.INFO)
+
+    formatter = RedactingFormatter(PII_FIELDS)
+    stream_handler = logging.StreamHandler()
+    stream_handler.setFormatter(formatter)
+
+    logger.addHandler(stream_handler)
+
+    for row in rows:
+        row_str = '; '.join(
+                [f"{col}={val}" for col, val in zip(cursor.column_names, row)]
+                ) + ';'
+        logger.info(row_str)
+
+    cursor.close()
+    db.close()
+
+
+if __name__ == "__main__":
+    main()
