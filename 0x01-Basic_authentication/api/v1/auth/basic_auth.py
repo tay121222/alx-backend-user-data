@@ -3,6 +3,7 @@
 from .auth import Auth
 import base64
 
+
 class BasicAuth(Auth):
     """inherits from Auth"""
     def extract_base64_authorization_header(
