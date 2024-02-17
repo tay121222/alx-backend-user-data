@@ -5,6 +5,7 @@ import base64
 from typing import TypeVar
 from models.user import User
 
+
 class BasicAuth(Auth):
     """inherits from Auth"""
     def extract_base64_authorization_header(
@@ -71,11 +72,11 @@ class BasicAuth(Auth):
             return None
 
         user_inst = User.search({'email': user_email})
-        if not user_inst:
+        if user_inst is None:
             return None
 
-        for user_inst in user_inst:
-            if user_inst.is_valid_password(user_pwd):
-                return user_inst
+        for user in user_inst:
+            if user.is_valid_password(user_pwd):
+                return user
 
         return None
