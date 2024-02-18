@@ -2,6 +2,8 @@
 """class SessionAuth that inherits from Auth"""
 from .auth import Auth
 import uuid
+from models.user import User
+import os
 
 
 class SessionAuth(Auth):
@@ -25,3 +27,19 @@ class SessionAuth(Auth):
             return None
 
         return self.user_id_by_session_id.get(session_id)
+
+    def session_cookie(self, request=None):
+        """retrives session ID"""
+        if request is None:
+            return None
+        session_name = os.getenv("SESSION_NAME")
+        return request.cookies.get(session_name)
+
+    def current_user(self, request=None):
+        """returns a User instance based on a cookie value"""
+        session_id = self.session_cookie(request)
+        if session_id:
+            user_id = self.user_id_for_session_id(session_id)
+            if user_id:
+                return User.get(user_id)
+        return None
