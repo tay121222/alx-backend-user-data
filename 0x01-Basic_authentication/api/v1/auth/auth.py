@@ -28,9 +28,9 @@ class Auth:
 
     def authorization_header(self, request=None) -> str:
         """validate all requests to secure the API"""
-        if request is None or 'Authorization' not in request.headers:
+        if request is None:
             return None
-        return request.headers['Authorization']
+        return request.headers.get("Authorization", None)
 
     def current_user(self, request=None) -> TypeVar('User'):
         """returns None"""
