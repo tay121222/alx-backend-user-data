@@ -9,6 +9,7 @@ AUTH = Auth()
 
 @app.route("/")
 def welcome():
+    """Welcome message"""
     return jsonify({"message": "Bienvenue"})
 
 
