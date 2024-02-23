@@ -14,6 +14,7 @@ def welcome():
 
 @app.route('/users', methods=['POST'])
 def register_user():
+    """Register new user"""
     email = request.form.get('email')
     password = request.form.get('password')
 
@@ -90,7 +91,7 @@ def get_reset_password_token():
 
 
 @app.route('/reset_password', methods=['PUT'])
-def update_password():
+def update_password() -> str:
     """update_password function to respond to
     the PUT /reset_password route"""
     email = request.form.get('email')
