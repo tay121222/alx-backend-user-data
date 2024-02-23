@@ -73,6 +73,7 @@ class Auth:
 
     def get_reset_password_token(self, email: str) -> str:
         """function to respond to the POST /reset_password route"""
+        user = None
         try:
             user = self._db.find_user_by(email=email)
         except NoResultFound:
