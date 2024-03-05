@@ -23,13 +23,11 @@ class SessionDBAuth(SessionExpAuth):
     def user_id_for_session_id(self, session_id=None):
         """Retrieve the User ID from the database based on
         the session ID"""
-        if session_id is None:
-            return None
-
-        user_session = UserSession.get(session_id)
-        if user_session:
-            return user_session.user_id
-
+        user_id = super().user_id_for_session_id(session_id)
+        if user_id:
+            user_sessions = UserSession.search({'session_id': session_id})
+            if user_sessions:
+                return user_sessions[0].user_id
         return None
 
     def destroy_session(self, request=None):
